@@ -1,5 +1,4 @@
-package com.apple.ui.pageobjects;
-
+package Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -13,7 +12,7 @@ public class GiveIndiaPage {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		System.setProperty("webdriver.chrome.driver", "Drivers/chromedriver"); // provide proper path of chrome exe file
+		System.setProperty("webdriver.chrome.driver", "Driver/chromedriver"); // provide proper path of chrome exe file
 
 		WebDriver driver = new ChromeDriver();
 
@@ -29,21 +28,18 @@ public class GiveIndiaPage {
 		WebElement updateButton = driver.findElement(By.xpath("//*[@id='mw-content-text']/div/ul[2]//a"));
 		js.executeScript("arguments[0].scrollIntoView();", updateButton);
 		List<WebElement> links = driver.findElements(By.xpath("//*[@id='mw-content-text']/div/ul[2]//a"));
-		for (int i = 0; i < links.size(); i++) {
-			WebElement element = links.get(i);
-			String url = element.getAttribute("href");
+			for(WebElement e: links){				
+			String url = e.getAttribute("href");
 			try {
 				URL link = new URL(url);
 				HttpURLConnection httpConn = (HttpURLConnection) link.openConnection();
 				httpConn.connect();
 				if (httpConn.getResponseCode() == 200) {
 					System.out.println(url + " - " + httpConn.getResponseMessage());
+				}else{
+					System.out.println(url + " - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode() + " - This Link Doesnt work");
 				}
-				if (httpConn.getResponseCode() == 404) {
-					System.out
-							.println(url + " - " + httpConn.getResponseMessage() + " - " + httpConn.getResponseCode());
-				}
-			} catch (Exception e) {
+			} catch (Exception exp) {
 			}
 		}
 
